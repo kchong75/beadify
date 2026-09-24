@@ -1,0 +1,169 @@
+{
+  "subject": "A cream / white 'flame point' cat lying down and looking left, with blue eyes, pink ear and nose, tan markings on the back and a banded tail.",
+  "summary": "Brightened the photo slightly, made both blue eyes clearly blue, strengthened the tail bands and the tan back patches, and added a dark outline. The cat's shape, pose and overall coloring are unchanged.",
+  "features": [
+    {
+      "name": "Blue eyes",
+      "why": "The two pale blue-gray irises are the most recognizable trait of this cat, but each is only ~3-4 cells wide and blends with the cream fur when the photo is averaged down, so it would become a gray or brown bead.",
+      "region": {
+        "shape": "ellipse",
+        "cx": 0.188,
+        "cy": 0.345,
+        "rx": 0.032,
+        "ry": 0.035,
+        "feather": 0.25
+      }
+    },
+    {
+      "name": "Far blue eye",
+      "why": "The second eye at the edge of the face is even smaller and would vanish completely.",
+      "region": {
+        "shape": "ellipse",
+        "cx": 0.068,
+        "cy": 0.383,
+        "rx": 0.015,
+        "ry": 0.022,
+        "feather": 0.25
+      }
+    },
+    {
+      "name": "Banded tail",
+      "why": "The tail alternates cream and tan bands. The contrast between bands is low, so they would merge into one beige color.",
+      "region": {
+        "shape": "rect",
+        "x0": 0.795,
+        "y0": 0.615,
+        "x1": 0.985,
+        "y1": 0.705,
+        "feather": 0.2
+      }
+    },
+    {
+      "name": "Tan back markings",
+      "why": "The soft tan patches on the back give the coat its flame-point look; at this size they would flatten into the surrounding cream.",
+      "region": {
+        "shape": "rect",
+        "x0": 0.5,
+        "y0": 0.4,
+        "x1": 0.82,
+        "y1": 0.62,
+        "feather": 0.3
+      }
+    }
+  ],
+  "edits": [
+    {
+      "op": "exposure",
+      "params": {
+        "gain": 1.25
+      },
+      "reason": "The photo is a little dim, which pushes the white and cream fur toward gray and brown beads. A mild global brightening lets it reach the light cream and white beads."
+    },
+    {
+      "op": "colorize",
+      "params": {
+        "target_rgb": [
+          70,
+          140,
+          215
+        ],
+        "strength": 0.7,
+        "lightness_strength": 0.4
+      },
+      "reason": "Pushes the iris toward a clear blue and lightens it slightly so it matches a blue bead instead of the surrounding cream or the dark pupil.",
+      "feature": "Blue eyes",
+      "region": {
+        "shape": "ellipse",
+        "cx": 0.188,
+        "cy": 0.345,
+        "rx": 0.032,
+        "ry": 0.035,
+        "feather": 0.25
+      }
+    },
+    {
+      "op": "colorize",
+      "params": {
+        "target_rgb": [
+          70,
+          140,
+          215
+        ],
+        "strength": 0.7,
+        "lightness_strength": 0.4
+      },
+      "reason": "Same treatment for the second eye so both eyes read as blue.",
+      "feature": "Far blue eye",
+      "region": {
+        "shape": "ellipse",
+        "cx": 0.068,
+        "cy": 0.383,
+        "rx": 0.015,
+        "ry": 0.022,
+        "feather": 0.25
+      }
+    },
+    {
+      "op": "local_contrast",
+      "params": {
+        "amount": 1.4,
+        "radius_frac": 0.006
+      },
+      "reason": "Sharpens the difference between neighbouring tail bands so alternating cream and tan cells survive the downscale.",
+      "feature": "Banded tail",
+      "region": {
+        "shape": "rect",
+        "x0": 0.795,
+        "y0": 0.615,
+        "x1": 0.985,
+        "y1": 0.705,
+        "feather": 0.2
+      }
+    },
+    {
+      "op": "contrast",
+      "params": {
+        "factor": 1.4
+      },
+      "reason": "Spreads the light and dark bands of the tail further apart in brightness.",
+      "feature": "Banded tail",
+      "region": {
+        "shape": "rect",
+        "x0": 0.795,
+        "y0": 0.615,
+        "x1": 0.985,
+        "y1": 0.705,
+        "feather": 0.2
+      }
+    },
+    {
+      "op": "local_contrast",
+      "params": {
+        "amount": 0.7,
+        "radius_frac": 0.02
+      },
+      "reason": "Keeps the soft tan patches on the back distinct from the cream fur around them.",
+      "feature": "Tan back markings",
+      "region": {
+        "shape": "rect",
+        "x0": 0.5,
+        "y0": 0.4,
+        "x1": 0.82,
+        "y1": 0.62,
+        "feather": 0.3
+      }
+    },
+    {
+      "op": "outline",
+      "params": {
+        "width_frac": 0.012,
+        "color_rgb": [
+          55,
+          55,
+          55
+        ]
+      },
+      "reason": "A thin dark outline around the silhouette, as in traditional bead patterns. It is added outside the cat so thin parts such as the tail keep all their own beads."
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "beadify"
+version = "0.1.0"
+description = "Turn photos into fuse-bead (Perler / Hama / MARD) pattern charts, with an optional AI-assisted step that keeps small identity-defining features (an eye color, a marking) alive through the color reduction."
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "MIT"}
+authors = [{name = "kchong75"}]
+keywords = ["perler", "hama", "mard", "fuse-beads", "pixel-art", "bead-pattern", "cross-stitch"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Intended Audience :: End Users/Desktop",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Topic :: Multimedia :: Graphics",
+    "Topic :: Artistic Software",
+]
+dependencies = [
+    "numpy>=1.20",
+    "Pillow>=9.0",
+    "scipy>=1.7",
+    "scikit-image>=0.19",
+]
+
+[project.optional-dependencies]
+ai = ["anthropic"]
+dev = ["pytest"]
+
+[project.urls]
+Homepage = "https://github.com/YOUR_USERNAME/beadify"
+Repository = "https://github.com/YOUR_USERNAME/beadify"
+Issues = "https://github.com/YOUR_USERNAME/beadify/issues"
+Changelog = "https://github.com/YOUR_USERNAME/beadify/blob/main/CHANGELOG.md"
+
+[project.scripts]
+beadify = "beadify.cli:main"
+beadify-ai = "beadify.ai.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+beadify = ["palettes/*.csv", "fonts/*"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
