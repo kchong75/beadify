@@ -132,11 +132,12 @@ def _thin_part_seeds(rough, fraction=0.65):
     return seeds & rough
 
 
-def _cutout(rgba, region, params):
-    """Make everything outside the subject transparent. Returns (image, note).
+def _segment(rgba, region, params):
+    """Segment one subject out of ``region``'s rough outline. Returns (alpha_mask or None, note).
 
     The rough ``region`` becomes a trimap: well inside is subject, well outside is background, and
     the band between (``band_frac`` of the longest side) is decided by a random walker on the colors.
+    ``alpha_mask`` is a float (H, W) array in [0, 1], sized to ``rgba``; ``None`` means skipped.
     """
     h, w = rgba.shape[:2]
     scale = min(1.0, WORK_SIDE / float(max(h, w)))
@@ -149,7 +150,7 @@ def _cutout(rgba, region, params):
     fg |= _thin_part_seeds(rough)
     bg = ~ndimage.binary_dilation(rough, iterations=band)
     if fg.sum() < 20 or bg.sum() < 20:
-        return rgba, "skipped: the outline is too small or fills the whole image"
+        return None, "skipped: the outline is too small or fills the whole image"
     markers = np.zeros((sh, sw), dtype=np.int32)
     markers[bg], markers[fg] = 1, 2
     with warnings.catch_warnings():
@@ -175,7 +176,7 @@ def _cutout(rgba, region, params):
     keep = ndimage.binary_opening(keep, iterations=1)
     labels, count = ndimage.label(keep)
     if count == 0:
-        return rgba, "skipped: no subject found inside the outline"
+        return None, "skipped: no subject found inside the outline"
     sizes = ndimage.sum(keep, labels, range(1, count + 1))
     keep = ndimage.binary_fill_holes(labels == (1 + int(np.argmax(sizes))))
     trimmed = ndimage.binary_erosion(keep, iterations=1)  # drop the one-pixel fringe of background color
@@ -183,9 +184,7 @@ def _cutout(rgba, region, params):
     soft = ndimage.gaussian_filter(keep.astype(np.float32), 1.0)
     alpha = np.asarray(Image.fromarray(soft, "F").resize((w, h), Image.BILINEAR))
     alpha = np.clip((alpha - 0.5) * 4.0 + 0.5, 0.0, 1.0)
-    out = rgba.copy()
-    out[..., 3] = np.rint(out[..., 3] * alpha).astype(np.uint8)
-    return out, "kept %.0f%% of the image as subject" % (100.0 * (alpha > 0.5).mean())
+    return alpha, "kept %.0f%% of the image as this subject" % (100.0 * (alpha > 0.5).mean())
 
 
 def _crop(rgba, region, params):
@@ -251,7 +250,26 @@ def apply_plan(image, plan, max_side=MAX_SIDE):
         entry["note"] = "; ".join(notes)
 
     arr[..., :3] = _to_rgb(lab)
-    for op in LATE_OPS:  # cutout -> crop -> outline
+
+    # cutout: one photo can hold several separate subjects (e.g. two pets). Each cutout edit
+    # segments its own region independently against the pre-cutout image, and the kept areas are
+    # unioned - a second cutout must never be able to erase what an earlier one already kept.
+    cutout_edits = [(edit, entry) for edit, entry in late_edits if edit.op == "cutout"]
+    if cutout_edits:
+        union = np.zeros(arr.shape[:2], dtype=np.float64)
+        for edit, entry in cutout_edits:
+            if edit.region is None:
+                entry["note"] = "skipped: this operation needs a region"
+                continue
+            mask, note = _segment(arr, edit.region, entry["params"])
+            entry["applied"] = mask is not None
+            entry["note"] = note
+            if mask is not None:
+                union = np.maximum(union, mask)
+        if any(entry["applied"] for _, entry in cutout_edits):
+            arr[..., 3] = np.rint(arr[..., 3] * union).astype(np.uint8)
+
+    for op in ("crop", "outline"):
         for edit, entry in late_edits:
             if edit.op != op:
                 continue
@@ -259,8 +277,6 @@ def apply_plan(image, plan, max_side=MAX_SIDE):
                 arr, note = _apply_outline(arr, entry["params"])
             elif edit.region is None:
                 note = "skipped: this operation needs a region"
-            elif op == "cutout":
-                arr, note = _cutout(arr, edit.region, entry["params"])
             else:
                 arr, note = _crop(arr, edit.region, entry["params"])
             entry["applied"] = not note.startswith("skipped")

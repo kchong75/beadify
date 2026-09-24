@@ -306,3 +306,26 @@ def test_cutout_keeps_thin_parts_narrower_than_the_band():
     bar = alpha[90:109, 40:201] > 127
     assert bar.mean() > 0.85  # the bar itself survives (the old behaviour kept only a sliver)
     assert (alpha[:70] > 127).sum() == 0 and (alpha[130:] > 127).sum() == 0
+
+
+def test_cutout_unions_multiple_subjects_instead_of_intersecting():
+    """Two cutout edits for two separate subjects must not erase each other."""
+    size = (300, 150)
+    rng = np.random.RandomState(2)
+    arr = np.clip(np.array([245, 245, 240]) + rng.normal(0, 4, (size[1], size[0], 3)), 0, 255).astype(np.uint8)
+    im = Image.fromarray(arr, "RGB").convert("RGBA")
+    d = ImageDraw.Draw(im)
+    d.ellipse([20, 30, 110, 120], fill=(90, 60, 40, 255))    # subject A, left
+    d.ellipse([190, 30, 280, 120], fill=(40, 70, 110, 255))  # subject B, right
+    poly_a = ellipse_polygon(65 / 300, 75 / 150, 55 / 300, 55 / 150)
+    poly_b = ellipse_polygon(235 / 300, 75 / 150, 55 / 300, 55 / 150)
+    plan = plan_from([
+        {"op": "cutout", "params": {"band_frac": 0.03}, "region": {"shape": "polygon", "points": poly_a}},
+        {"op": "cutout", "params": {"band_frac": 0.03}, "region": {"shape": "polygon", "points": poly_b}},
+    ])
+    out, results = apply_plan(im, plan)
+    assert [r["applied"] for r in results] == [True, True]
+    alpha = np.asarray(out)[..., 3]
+    assert alpha[75, 65] > 127   # subject A survives the second cutout
+    assert alpha[75, 235] > 127  # subject B survives the first cutout
+    assert alpha[75, 150] < 127  # the gap between them is still cut away
