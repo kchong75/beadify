@@ -5,7 +5,7 @@ Issues and pull requests are welcome.
 ## Development setup
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/beadify.git
+git clone https://github.com/kchong75/beadify.git
 cd beadify
 pip install -e ".[dev]"
 pytest

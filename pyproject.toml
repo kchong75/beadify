@@ -33,10 +33,10 @@ ai = ["anthropic"]
 dev = ["pytest"]
 
 [project.urls]
-Homepage = "https://github.com/YOUR_USERNAME/beadify"
-Repository = "https://github.com/YOUR_USERNAME/beadify"
-Issues = "https://github.com/YOUR_USERNAME/beadify/issues"
-Changelog = "https://github.com/YOUR_USERNAME/beadify/blob/main/CHANGELOG.md"
+Homepage = "https://github.com/kchong75/beadify"
+Repository = "https://github.com/kchong75/beadify"
+Issues = "https://github.com/kchong75/beadify/issues"
+Changelog = "https://github.com/kchong75/beadify/blob/main/CHANGELOG.md"
 
 [project.scripts]
 beadify = "beadify.cli:main"
