@@ -25,7 +25,7 @@ dependencies = [
     "numpy>=1.20",
     "Pillow>=9.0",
     "scipy>=1.7",
-    "scikit-image>=0.19",
+    "scikit-image>=0.25.2",
 ]
 
 [project.optional-dependencies]
