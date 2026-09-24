@@ -25,3 +25,6 @@ Thumbs.db
 
 # beadify-ai working folders left by ad hoc local runs (examples/ ships curated results deliberately)
 *_ai/
+
+# internal planning notes (kept locally, not published)
+/plan.md
