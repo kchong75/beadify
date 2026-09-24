@@ -2,7 +2,7 @@
 
 **Subject:** A cream / white 'flame point' cat lying down and looking left, with blue eyes, pink ear and nose, tan markings on the back and a banded tail.
 
-**Summary:** Brightened the photo slightly, made both blue eyes clearly blue, strengthened the tail bands and the tan back patches, and added a dark outline. The cat's shape, pose and overall coloring are unchanged.
+**Summary:** Brightened the photo slightly, made both blue eyes clearly blue, and strengthened the tail bands and the tan back patches. No outline is added. The cat's shape, pose and overall coloring are unchanged.
 
 ## Features to keep
 
@@ -42,11 +42,6 @@
    - Serves: Tan back markings
    - Settings: amount=0.7, radius_frac=0.02
    - Where: box (0.50, 0.40) to (0.82, 0.62)
-7. **E7 outline** (applied)
-   - Why: A thin dark outline around the silhouette, as in traditional bead patterns. It is added outside the cat so thin parts such as the tail keep all their own beads.
-   - Settings: width_frac=0.012, color_rgb=[55, 55, 55]
-   - Where: whole image
-   - Note: 15 px outline
 
 ## What stays the same
 

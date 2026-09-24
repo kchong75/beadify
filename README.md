@@ -12,7 +12,10 @@ color reduction, instead of quietly averaging them away.
   <img src="examples/blue_eyes_cat/comparison.png" width="720" alt="Before/after: a cat's photo with the features Claude flagged marked, next to the enhanced version">
 </p>
 <p align="center">
-  <img src="examples/blue_eyes_cat/pattern_preview.jpg" width="420" alt="The resulting bead chart">
+  <img src="examples/blue_eyes_cat/eye_comparison.jpg" width="640" alt="Same 20-color budget, face crop: without the AI step (left) the eyes vanish into gray fur beads; with it (right) they come out clearly blue">
+  <br><sub>Same photo, same 20-color budget. Left: <code>beadify</code> alone. Right: after <code>beadify-ai</code>.
+  Without the AI step the eyes never get a blue bead at <em>any</em> color count - see
+  <a href="examples/blue_eyes_cat/">examples/blue_eyes_cat/</a> for the full breakdown.</sub>
 </p>
 
 More examples in [`examples/`](examples/).

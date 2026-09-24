@@ -1,6 +1,6 @@
 {
   "subject": "A cream / white 'flame point' cat lying down and looking left, with blue eyes, pink ear and nose, tan markings on the back and a banded tail.",
-  "summary": "Brightened the photo slightly, made both blue eyes clearly blue, strengthened the tail bands and the tan back patches, and added a dark outline. The cat's shape, pose and overall coloring are unchanged.",
+  "summary": "Brightened the photo slightly, made both blue eyes clearly blue, and strengthened the tail bands and the tan back patches. No outline is added. The cat's shape, pose and overall coloring are unchanged.",
   "features": [
     {
       "name": "Blue eyes",
@@ -152,18 +152,6 @@
         "y1": 0.62,
         "feather": 0.3
       }
-    },
-    {
-      "op": "outline",
-      "params": {
-        "width_frac": 0.012,
-        "color_rgb": [
-          55,
-          55,
-          55
-        ]
-      },
-      "reason": "A thin dark outline around the silhouette, as in traditional bead patterns. It is added outside the cat so thin parts such as the tail keep all their own beads."
     }
   ]
 }
